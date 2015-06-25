@@ -3,6 +3,7 @@ package hu.dpc.edu.chat.server;
 import hu.dpc.edu.chat.common.Message;
 import hu.dpc.edu.chat.common.BroadcastMessage;
 import hu.dpc.edu.chat.common.MessageType;
+import hu.dpc.edu.chat.common.SystemMessage;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -29,9 +30,7 @@ public class ChatClientHandler implements Runnable, ChatClient {
         try {
             out = new ObjectOutputStream(conn.getOutputStream());
             
-            send(new BroadcastMessage("System", 
-                    "Hello, dear guest, logged in from: " + conn.getInetAddress(), 
-                    MessageType.SYSTEM));
+            send(new SystemMessage("Welcome, dear " + getName()));
             
             router.registerClient(this);
 

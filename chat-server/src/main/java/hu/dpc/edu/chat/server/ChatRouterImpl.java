@@ -15,6 +15,7 @@ public class ChatRouterImpl implements ChatRouter {
 
     @Override
     public synchronized void broadcast(Message message) {
+        System.out.println("Broadcast: " + message);
         for (ChatClient client : clients) {
             client.send(message);
         }
