@@ -3,6 +3,8 @@ package hu.dpc.edu.chat.server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  *
@@ -11,12 +13,15 @@ import java.net.Socket;
 public class MyChatServer {
 
     private int port;
-    
+
     private ChatRouter router;
+
+    private ExecutorService executorService;
 
     public MyChatServer(int port, ChatRouter router) {
         this.port = port;
         this.router = router;
+        executorService = Executors.newFixedThreadPool(10);
     }
 
     public void start() throws IOException {
@@ -25,8 +30,8 @@ public class MyChatServer {
         while (true) {
             Socket socket = ss.accept();
             ChatClientHandler clientHandler = new ChatClientHandler(socket, router);
-            Thread t = new Thread(clientHandler);
-            t.start();
+
+            executorService.submit(clientHandler);
         }
     }
 
